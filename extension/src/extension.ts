@@ -16,7 +16,7 @@ export function deactivate(): void {}
 async function generateCode(): Promise<void> {
   const editor = vscode.window.activeTextEditor;
   if (!editor) {
-    void vscode.window.showErrorMessage("Abra um arquivo no editor antes de usar o Meu OpenCode.");
+    void vscode.window.showErrorMessage("Abra um arquivo no editor antes de usar o BrotherCode.");
     return;
   }
 
@@ -51,7 +51,7 @@ async function generateCode(): Promise<void> {
   const progress = vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Notification,
-      title: "Meu OpenCode está gerando código",
+      title: "BrotherCode está gerando código",
       cancellable: true,
     },
     async (_progress, cancellationToken) => {

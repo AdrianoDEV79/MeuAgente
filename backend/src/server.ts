@@ -107,7 +107,7 @@ app.use((error: unknown, _request: Request, response: Response, _next: unknown) 
 });
 
 const server = app.listen(port, host, () => {
-  console.log(`Meu OpenCode Assistant backend ouvindo em http://${host}:${port}`);
+  console.log(`BrotherCode backend ouvindo em http://${host}:${port}`);
 });
 
 function buildSystemPrompt(): string {

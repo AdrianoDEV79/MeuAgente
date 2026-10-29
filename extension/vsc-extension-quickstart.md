@@ -23,7 +23,7 @@ npm run compile
 4. Abra um arquivo de código nessa nova janela.
 5. Selecione o trecho que deseja alterar.
 6. Pressione `Ctrl+Shift+P`.
-7. Execute **Meu OpenCode: Gerar código**.
+7. Execute **BrotherCode: Gerar código**.
 8. Escreva o pedido, por exemplo: `adicione tratamento de erro`.
 9. Escolha um dos provedores configurados no backend.
 
@@ -36,7 +36,7 @@ Para mostrar mais opções nessa lista, configure `LLM_PROVIDERS` e as chaves co
 O endereço padrão é `http://localhost:3000`. Para mudar:
 
 1. abra as configurações da janela de desenvolvimento;
-2. procure por `Meu OpenCode Assistant`;
+2. procure por `BrotherCode`;
 3. altere `meu-opencode.backendUrl`.
 
 ## Desenvolvimento

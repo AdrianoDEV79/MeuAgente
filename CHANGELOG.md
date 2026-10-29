@@ -4,6 +4,10 @@ O formato segue a ideia de [Keep a Changelog](https://keepachangelog.com/pt-BR/1
 
 ## [Não lançado]
 
+### Alterado
+
+- Nome visível do agente definido como **BrotherCode**. Os identificadores técnicos `meu-opencode.*` permanecem para compatibilidade.
+
 ### Adicionado
 
 - Catálogo de múltiplos provedores e seleção de servidor antes de cada geração.

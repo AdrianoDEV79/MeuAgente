@@ -1,4 +1,4 @@
-# Meu OpenCode Assistant
+# BrotherCode
 
 Um assistente de programação que funciona dentro do VS Code.
 
@@ -60,7 +60,7 @@ Depois:
 3. uma nova janela do VS Code será aberta;
 4. abra um arquivo de código e selecione um trecho;
 5. pressione `Ctrl+Shift+P`;
-6. procure por **Meu OpenCode: Gerar código**;
+6. procure por **BrotherCode: Gerar código**;
 7. escreva o que você quer fazer.
 
 A resposta aparecerá abaixo do código selecionado.

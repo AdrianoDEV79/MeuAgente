@@ -1,6 +1,6 @@
 {
   "name": "meu-opencode-assistant",
-  "displayName": "Meu OpenCode Assistant",
+  "displayName": "BrotherCode",
   "description": "Assistente de código privado com backend local e streaming SSE.",
   "version": "1.0.0",
   "publisher": "meu-opencode",
@@ -15,16 +15,16 @@
     "commands": [
       {
         "command": "meu-opencode.gerarCodigo",
-        "title": "Meu OpenCode: Gerar código"
+        "title": "BrotherCode: Gerar código"
       }
     ],
     "configuration": {
-      "title": "Meu OpenCode Assistant",
+      "title": "BrotherCode",
       "properties": {
         "meu-opencode.backendUrl": {
           "type": "string",
           "default": "http://localhost:3000",
-          "description": "URL base do backend local do Meu OpenCode Assistant."
+          "description": "URL base do backend local do BrotherCode."
         }
       }
     }

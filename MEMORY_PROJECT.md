@@ -1,6 +1,6 @@
 # MEMORY_PROJECT
 
-Arquivo de retomada do projeto **Meu OpenCode Assistant**. Leia este arquivo antes de continuar instalações ou implementar novas funcionalidades.
+Arquivo de retomada do projeto **BrotherCode**. Leia este arquivo antes de continuar instalações ou implementar novas funcionalidades.
 
 ## Objetivo
 
@@ -127,7 +127,7 @@ npm install
 npm run compile
 ```
 
-Abra a pasta `extension` no VS Code, pressione `F5`, abra um arquivo na nova janela e execute **Meu OpenCode: Gerar código** pela Command Palette.
+Abra a pasta `extension` no VS Code, pressione `F5`, abra um arquivo na nova janela e execute **BrotherCode: Gerar código** pela Command Palette.
 
 ## Dependências já instaladas neste ambiente
 

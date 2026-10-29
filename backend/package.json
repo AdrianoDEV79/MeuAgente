@@ -2,7 +2,7 @@
   "name": "meu-opencode-assistant-backend",
   "version": "1.0.0",
   "private": true,
-  "description": "Backend local com streaming SSE para um assistente de código privado.",
+  "description": "Backend local do BrotherCode com streaming SSE.",
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
