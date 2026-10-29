@@ -7,17 +7,7 @@ import OpenAI from "openai";
 const app = express();
 const port = parsePort(process.env.PORT, 3000);
 const host = process.env.HOST || "127.0.0.1";
-const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
-
-const apiKey = process.env.OPENAI_API_KEY;
-if (!apiKey) {
-  throw new Error("OPENAI_API_KEY não foi definida. Configure o arquivo .env antes de iniciar o backend.");
-}
-
-const client = new OpenAI({
-  apiKey,
-  baseURL: process.env.OPENAI_BASE_URL || undefined,
-});
+const providers = loadProviders();
 
 const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:3000,http://127.0.0.1:3000")
   .split(",")
@@ -38,7 +28,11 @@ app.use(
 app.use(express.json({ limit: "256kb" }));
 
 app.get("/health", (_request, response) => {
-  response.json({ ok: true, model });
+  response.json({ ok: true, providers: providers.map(toPublicProvider) });
+});
+
+app.get("/api/providers", (_request, response) => {
+  response.json({ providers: providers.map(toPublicProvider) });
 });
 
 app.post("/api/chat/stream", async (request: Request, response: Response) => {
@@ -53,6 +47,15 @@ app.post("/api/chat/stream", async (request: Request, response: Response) => {
   const prompt = body.prompt!.trim();
   const selectedCode = body.selectedCode ?? "";
   const fileLanguage = body.fileLanguage!.trim();
+  const provider = findProvider(body.provider);
+
+  if (!provider) {
+    response.status(400).json({
+      error: "Provedor inválido.",
+      providers: providers.map(toPublicProvider),
+    });
+    return;
+  }
 
   setSseHeaders(response);
   let closed = false;
@@ -63,15 +66,15 @@ app.post("/api/chat/stream", async (request: Request, response: Response) => {
   response.on("close", closeListener);
 
   try {
-    const completion = await client.chat.completions.create({
-      model,
+    const completion = await provider.client.chat.completions.create({
+      model: provider.model,
       stream: true,
       temperature: 0.2,
       messages: [
         { role: "system", content: buildSystemPrompt() },
         {
           role: "user",
-          content: buildUserPrompt({ prompt, selectedCode, fileLanguage }),
+          content: buildUserPrompt({ prompt, selectedCode, fileLanguage, provider: provider.id }),
         },
       ],
     });
@@ -160,7 +163,53 @@ function validateChatRequest(body: Partial<ChatRequest>): string | undefined {
     return "O campo fileLanguage é obrigatório e não pode ser vazio.";
   }
   if (body.fileLanguage.length > 100) return "O campo fileLanguage excede o limite permitido.";
+  if (body.provider !== undefined && (typeof body.provider !== "string" || body.provider.length > 100)) {
+    return "O campo provider deve ser uma string curta.";
+  }
   return undefined;
+}
+
+function loadProviders(): ProviderConfig[] {
+  const ids = (process.env.LLM_PROVIDERS || "openai")
+    .split(",")
+    .map((id) => id.trim().toLowerCase())
+    .filter(Boolean);
+  const result = ids.map(createProvider).filter((provider): provider is ProviderConfig => provider !== undefined);
+  if (result.length === 0) {
+    throw new Error("Nenhum provedor configurado. Defina LLM_PROVIDERS e as chaves correspondentes no .env.");
+  }
+  return result;
+}
+
+function createProvider(id: string): ProviderConfig | undefined {
+  const prefix = id.toUpperCase().replace(/[^A-Z0-9]/g, "_");
+  const apiKey = process.env[`${prefix}_API_KEY`];
+  if (!apiKey) {
+    if (id === "openai" && process.env.OPENAI_API_KEY) return createOpenAIStyleProvider("openai", "OpenAI", process.env.OPENAI_API_KEY, process.env.OPENAI_BASE_URL, process.env.OPENAI_MODEL || "gpt-4o-mini");
+    if (id === "deepseek" && process.env.DEEPSEEK_API_KEY) return createOpenAIStyleProvider("deepseek", "DeepSeek", process.env.DEEPSEEK_API_KEY, process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com", process.env.DEEPSEEK_MODEL || "deepseek-chat");
+    return undefined;
+  }
+  const defaultBaseUrl = id === "deepseek" ? "https://api.deepseek.com" : undefined;
+  const defaultModel = id === "deepseek" ? "deepseek-chat" : id === "openai" ? "gpt-4o-mini" : "gpt-4o-mini";
+  return createOpenAIStyleProvider(
+    id,
+    process.env[`${prefix}_NAME`] || id,
+    apiKey,
+    process.env[`${prefix}_BASE_URL`] || defaultBaseUrl,
+    process.env[`${prefix}_MODEL`] || defaultModel,
+  );
+}
+
+function createOpenAIStyleProvider(id: string, name: string, apiKey: string, baseURL: string | undefined, model: string): ProviderConfig {
+  return { id, name, model, client: new OpenAI({ apiKey, baseURL }) };
+}
+
+function findProvider(id: string | undefined): ProviderConfig | undefined {
+  return providers.find((provider) => provider.id === (id || providers[0].id));
+}
+
+function toPublicProvider(provider: ProviderConfig): PublicProvider {
+  return { id: provider.id, name: provider.name, model: provider.model };
 }
 
 function parsePort(value: string | undefined, fallback: number): number {
@@ -180,4 +229,14 @@ type ChatRequest = {
   prompt: string;
   selectedCode: string;
   fileLanguage: string;
+  provider?: string;
 };
+
+type ProviderConfig = {
+  id: string;
+  name: string;
+  model: string;
+  client: OpenAI;
+};
+
+type PublicProvider = Pick<ProviderConfig, "id" | "name" | "model">;

@@ -6,6 +6,8 @@ O formato segue a ideia de [Keep a Changelog](https://keepachangelog.com/pt-BR/1
 
 ### Adicionado
 
+- Catálogo de múltiplos provedores e seleção de servidor antes de cada geração.
+- Configuração de vários IDs, chaves, endpoints e modelos usando `LLM_PROVIDERS`.
 - Backend Express + TypeScript com integração `openai` e suporte a `OPENAI_BASE_URL`.
 - Endpoint `POST /api/chat/stream` com resposta SSE.
 - Endpoint `GET /health`.

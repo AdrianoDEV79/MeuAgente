@@ -21,11 +21,27 @@ Payload:
 {
   "prompt": "Explique e corrija este trecho",
   "selectedCode": "const value = input;",
-  "fileLanguage": "typescript"
+  "fileLanguage": "typescript",
+  "provider": "deepseek"
 }
 ```
 
 `prompt` e `fileLanguage` são obrigatórios. `selectedCode` pode ser vazio, mas deve ser uma string. O backend limita `prompt` a 20.000 caracteres, a seleção a 100.000 caracteres e o idioma a 100 caracteres.
+
+`provider` é opcional. Quando omitido, o primeiro ID de `LLM_PROVIDERS` é usado. A extensão consulta `GET /api/providers` e envia o ID escolhido pelo usuário.
+
+## `GET /api/providers`
+
+Lista os provedores configurados sem expor chaves:
+
+```json
+{
+  "providers": [
+    { "id": "openai", "name": "openai", "model": "gpt-4o-mini" },
+    { "id": "deepseek", "name": "DeepSeek", "model": "deepseek-chat" }
+  ]
+}
+```
 
 A resposta tem os cabeçalhos `Content-Type: text/event-stream`, `Cache-Control: no-cache` e `Connection: keep-alive`. Cada evento é encerrado por duas quebras de linha:
 
@@ -52,5 +68,5 @@ Com o backend em execução:
 ```bash
 curl -N http://127.0.0.1:3000/api/chat/stream \
   -H 'Content-Type: application/json' \
-  -d '{"prompt":"Adicione um comentário curto","selectedCode":"const answer = 42;","fileLanguage":"javascript"}'
+  -d '{"prompt":"Adicione um comentário curto","selectedCode":"const answer = 42;","fileLanguage":"javascript","provider":"openai"}'
 ```

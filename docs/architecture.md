@@ -7,7 +7,9 @@ O projeto tem dois componentes executados separadamente:
 1. A extensão `extension` roda no host do VS Code e possui acesso ao editor ativo.
 2. O backend `backend` roda localmente e possui a única cópia da chave do provedor de LLM.
 
-O fluxo é deliberadamente simples: VS Code → HTTP POST local → provedor compatível → SSE → VS Code.
+O fluxo é deliberadamente simples: VS Code → catálogo local de provedores → HTTP POST local → servidor escolhido → SSE → VS Code.
+
+O backend carrega os provedores a partir de `LLM_PROVIDERS`. Para cada ID, ele lê um conjunto de variáveis com prefixo próprio, cria um cliente isolado e expõe apenas `id`, `name` e `model` para a extensão. Assim, várias API keys e endpoints podem coexistir sem serem enviados ao VS Code.
 
 ## Fluxo de uma solicitação
 

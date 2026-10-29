@@ -10,7 +10,7 @@ Você precisa ter:
 
 - Node.js 20 ou mais recente;
 - VS Code;
-- uma chave de API de um serviço compatível com OpenAI, como OpenAI ou DeepSeek.
+- uma ou mais chaves de serviços compatíveis com OpenAI, como OpenAI, DeepSeek, Groq ou OpenRouter.
 
 ## 1. Preparar o servidor
 
@@ -22,10 +22,17 @@ npm install
 cp .env.example .env
 ```
 
-Abra o arquivo `backend/.env` e coloque sua chave nesta linha:
+Abra o arquivo `backend/.env` e configure os servidores que deseja usar. Por exemplo:
 
 ```env
-OPENAI_API_KEY=sua-chave-aqui
+LLM_PROVIDERS=openai,deepseek
+
+OPENAI_API_KEY=sua-chave-openai
+OPENAI_MODEL=gpt-4o-mini
+
+DEEPSEEK_API_KEY=sua-chave-deepseek
+DEEPSEEK_MODEL=deepseek-chat
+DEEPSEEK_BASE_URL=https://api.deepseek.com
 ```
 
 Depois inicie o servidor:
@@ -58,23 +65,33 @@ Depois:
 
 A resposta aparecerá abaixo do código selecionado.
 
-## Usando DeepSeek ou outro serviço
+## Usando vários servidores
 
-O padrão usa OpenAI. Para usar outro serviço compatível, edite o arquivo `backend/.env`:
+Você pode deixar várias chaves configuradas ao mesmo tempo. O valor de `LLM_PROVIDERS` define quais opções aparecem no VS Code. Ao executar o comando, a extensão mostra uma lista e você escolhe o servidor e o modelo daquela geração.
+
+Cada ID usa variáveis com o mesmo prefixo em letras maiúsculas. Para adicionar outro servidor compatível, acrescente o ID à lista e configure sua chave, endereço e modelo:
 
 ```env
-OPENAI_API_KEY=sua-chave-aqui
-OPENAI_BASE_URL=https://api.deepseek.com
-OPENAI_MODEL=deepseek-chat
+LLM_PROVIDERS=openai,deepseek,groq,openrouter
+
+GROQ_API_KEY=sua-chave-groq
+GROQ_BASE_URL=https://api.groq.com/openai/v1
+GROQ_MODEL=llama-3.3-70b-versatile
+GROQ_NAME=Groq
+
+OPENROUTER_API_KEY=sua-chave-openrouter
+OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+OPENROUTER_MODEL=deepseek/deepseek-chat-v3-0324:free
+OPENROUTER_NAME=OpenRouter Free
 ```
 
-Depois pare e inicie o servidor novamente.
+Depois de alterar o `.env`, pare e inicie o backend novamente. As chaves nunca são enviadas à extensão nem aparecem no catálogo de provedores; somente o nome, o ID e o modelo são retornados.
 
 ## Se aparecer um erro
 
 **“Não foi possível conectar ao backend local”**: verifique se `npm run dev` ainda está rodando na pasta `backend`.
 
-**Erro de chave ou modelo**: confira `OPENAI_API_KEY`, `OPENAI_BASE_URL` e `OPENAI_MODEL` no arquivo `.env`.
+**Erro de chave ou modelo**: confira `LLM_PROVIDERS` e as variáveis do provedor escolhido no arquivo `.env`.
 
 **A extensão não aparece no VS Code**: abra a pasta `extension` e pressione `F5` novamente. O comando só aparece na janela de desenvolvimento aberta pelo VS Code.
 

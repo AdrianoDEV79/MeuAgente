@@ -8,7 +8,7 @@ Assistente de programação para VS Code. O usuário seleciona código, escreve 
 
 - `backend`: servidor local em `http://127.0.0.1:3000`.
 - `extension`: extensão do VS Code.
-- Comunicação: `POST /api/chat/stream` com resposta em tempo real via SSE.
+- Comunicação: `GET /api/providers` para catálogo e `POST /api/chat/stream` com resposta em tempo real via SSE.
 - Chave de API: somente em `backend/.env`; nunca deve ir para o Git.
 
 ## Já pronto
@@ -16,6 +16,8 @@ Assistente de programação para VS Code. O usuário seleciona código, escreve 
 - Backend Express + TypeScript.
 - Integração com SDK compatível com OpenAI.
 - Suporte a `OPENAI_BASE_URL` para serviços como DeepSeek.
+- Catálogo de vários provedores via `LLM_PROVIDERS`, com seleção no VS Code.
+- Suporte a servidores OpenAI-compatible personalizados por prefixo de variáveis.
 - Extensão com comando `meu-opencode.gerarCodigo`.
 - Captura de seleção e linguagem do arquivo.
 - Inserção progressiva da resposta no editor.

@@ -25,8 +25,11 @@ npm run compile
 6. Pressione `Ctrl+Shift+P`.
 7. Execute **Meu OpenCode: Gerar código**.
 8. Escreva o pedido, por exemplo: `adicione tratamento de erro`.
+9. Escolha um dos provedores configurados no backend.
 
 A resposta será inserida abaixo da seleção.
+
+Para mostrar mais opções nessa lista, configure `LLM_PROVIDERS` e as chaves correspondentes em `backend/.env`. Consulte o README principal para ver um exemplo com OpenAI, DeepSeek e outros servidores compatíveis.
 
 ## Se o backend estiver em outro endereço
 

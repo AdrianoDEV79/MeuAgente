@@ -28,6 +28,21 @@ async function generateCode(): Promise<void> {
   });
   if (prompt === undefined) return;
 
+  const providers = await loadProviders(getBackendUrl());
+  if (providers.length === 0) {
+    void vscode.window.showErrorMessage("Nenhum provedor foi configurado no backend.");
+    return;
+  }
+  const selectedProvider = await vscode.window.showQuickPick(
+    providers.map((provider) => ({
+      label: provider.name,
+      description: `${provider.model} (${provider.id})`,
+      provider,
+    })),
+    { placeHolder: "Escolha o provedor de inteligência artificial" },
+  );
+  if (!selectedProvider) return;
+
   const selectedCode = editor.document.getText(editor.selection);
   const fileLanguage = editor.document.languageId || "plaintext";
   const insertionPoint = editor.selection.end;
@@ -46,6 +61,7 @@ async function generateCode(): Promise<void> {
           prompt,
           selectedCode,
           fileLanguage,
+          provider: selectedProvider.provider.id,
           backendUrl,
           signal: controller.signal,
         });
@@ -80,6 +96,7 @@ async function consumeStream(
       prompt: input.prompt,
       selectedCode: input.selectedCode,
       fileLanguage: input.fileLanguage,
+      provider: input.provider,
     }),
     signal: input.signal,
   });
@@ -151,6 +168,7 @@ type StreamInput = {
   prompt: string;
   selectedCode: string;
   fileLanguage: string;
+  provider: string;
   backendUrl: string;
   signal: AbortSignal;
 };
@@ -161,3 +179,20 @@ type SsePayload = {
   error?: string;
   detail?: string;
 };
+
+type Provider = {
+  id: string;
+  name: string;
+  model: string;
+};
+
+async function loadProviders(backendUrl: string): Promise<Provider[]> {
+  try {
+    const response = await fetch(`${backendUrl}/api/providers`);
+    if (!response.ok) return [];
+    const body = (await response.json()) as { providers?: Provider[] };
+    return Array.isArray(body.providers) ? body.providers : [];
+  } catch {
+    return [];
+  }
+}
