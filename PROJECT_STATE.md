@@ -1,50 +1,39 @@
 # Estado do projeto
 
-## Objetivo
+## O que é
 
-Assistente de código privado para VS Code, com backend local e geração incremental via SSE.
+Assistente de programação para VS Code. O usuário seleciona código, escreve um pedido e recebe a resposta no mesmo arquivo.
 
-## Entregável
+## Como funciona
 
-Monorepo mínimo em `/home/ubuntu/meu-opencode-assistant` com backend Express + TypeScript e extensão VS Code TypeScript.
+- `backend`: servidor local em `http://127.0.0.1:3000`.
+- `extension`: extensão do VS Code.
+- Comunicação: `POST /api/chat/stream` com resposta em tempo real via SSE.
+- Chave de API: somente em `backend/.env`; nunca deve ir para o Git.
 
-## Invariantes
+## Já pronto
 
-- Backend padrão: `http://127.0.0.1:3000`.
-- Endpoint: `POST /api/chat/stream`.
-- Entrada: `prompt`, `selectedCode`, `fileLanguage`.
-- Resposta: eventos SSE `data: {"text":"..."}` e evento final `{"done":true}`.
-- Chave de API somente no backend via `.env`; nunca no código da extensão.
-- Código-fonte não deve ser compactado nem reescrito automaticamente.
+- Backend Express + TypeScript.
+- Integração com SDK compatível com OpenAI.
+- Suporte a `OPENAI_BASE_URL` para serviços como DeepSeek.
+- Extensão com comando `meu-opencode.gerarCodigo`.
+- Captura de seleção e linguagem do arquivo.
+- Inserção progressiva da resposta no editor.
+- README e guias simplificados.
+- Build do backend e verificação de tipos da extensão funcionando.
 
-## Decisões
+## Falta fazer
 
-- Usar SDK oficial `openai` com `OPENAI_BASE_URL` opcional para provedores compatíveis.
-- Usar `fetch` nativo da extensão para consumir o corpo SSE.
-- Inspirar o prompt, contexto e eventos no OpenCode oficial sem copiar o monorepo.
-- Inserir fragmentos em sequência após a seleção, mantendo a posição atualizada.
-- Ignorar `node_modules`, builds e `.env` no Git.
+- Testar manualmente no VS Code com uma chave válida.
+- Criar testes automatizados HTTP.
+- Criar testes de integração da extensão.
+- Adicionar sessões, histórico e painel visual, se forem necessários no futuro.
 
-## Estado
+## Documentos principais
 
-- backend: implementado e compilado.
-- extensão: implementada e verificada com TypeScript.
-- documentação: criada em `README.md` e `vsc-extension-quickstart.md`.
-- segredos: não fornecidos nem versionados.
-
-## Evidências
-
-- `backend/src/server.ts`: servidor, validação e streaming.
-- `extension/src/extension.ts`: comando, contexto e inserção incremental.
-- `backend/package-lock.json`, `extension/package-lock.json`: dependências fixadas.
-- Referência: https://github.com/anomalyco/opencode
-
-## Pendências
-
-- Configurar uma chave real em `backend/.env` localmente.
-- Testar manualmente em uma janela de desenvolvimento do VS Code com um provedor ativo.
-- Opcional: adicionar testes automatizados HTTP e testes de integração da extensão.
-
-## Próxima ação
-
-Executar backend e extensão em ambiente local, validar uma geração completa e registrar eventuais ajustes em novo commit.
+- `README.md`: guia para começar.
+- `docs/architecture.md`: explicação técnica.
+- `docs/api.md`: contrato do backend.
+- `CONTRIBUTING.md`: contribuição e revisão.
+- `SECURITY.md`: segurança e privacidade.
+- `CHANGELOG.md`: histórico de mudanças.

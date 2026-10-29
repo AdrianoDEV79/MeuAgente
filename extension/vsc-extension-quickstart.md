@@ -1,20 +1,41 @@
-# Meu OpenCode Assistant
+# Guia rápido
 
-## Backend
+## O que você precisa
 
-1. Entre em `../backend`.
-2. Execute `npm install`.
-3. Copie `.env.example` para `.env` e configure `OPENAI_API_KEY`.
-4. Execute `npm run dev`.
+- Node.js 20 ou mais recente;
+- VS Code;
+- o backend funcionando na porta 3000.
 
-O backend escuta por padrão em `http://localhost:3000`.
+## Instalar
 
-## Extensão
+Na pasta `extension`, execute:
 
-1. Entre em `extension`.
-2. Execute `npm install` e depois `npm run compile`.
-3. Abra a pasta `extension` no VS Code.
-4. Pressione `F5` para abrir uma janela de desenvolvimento.
-5. Em um editor com código selecionado, execute **Meu OpenCode: Gerar código** pela Command Palette.
+```bash
+npm install
+npm run compile
+```
 
-A extensão envia apenas o prompt, a seleção e a linguagem do arquivo ao backend. A chave do provedor permanece no backend local e nunca é exposta à extensão.
+## Abrir no VS Code
+
+1. Abra a pasta `extension` no VS Code.
+2. Pressione `F5`.
+3. O VS Code abrirá uma nova janela para testar a extensão.
+4. Abra um arquivo de código nessa nova janela.
+5. Selecione o trecho que deseja alterar.
+6. Pressione `Ctrl+Shift+P`.
+7. Execute **Meu OpenCode: Gerar código**.
+8. Escreva o pedido, por exemplo: `adicione tratamento de erro`.
+
+A resposta será inserida abaixo da seleção.
+
+## Se o backend estiver em outro endereço
+
+O endereço padrão é `http://localhost:3000`. Para mudar:
+
+1. abra as configurações da janela de desenvolvimento;
+2. procure por `Meu OpenCode Assistant`;
+3. altere `meu-opencode.backendUrl`.
+
+## Desenvolvimento
+
+Use `npm run watch` para recompilar automaticamente enquanto edita o código. Use `npm run check-types` para verificar os tipos sem gerar arquivos.
