@@ -1,0 +1,17 @@
+# Dependencies
+**/node_modules/
+
+# Build output
+**/dist/
+**/out/
+
+# Environment and secrets
+**/.env
+**/.env.*
+!**/.env.example
+
+# Editor and OS files
+.vscode/launch.json
+.vscode/settings.json
+.DS_Store
+*.log

@@ -1,0 +1,42 @@
+{
+  "name": "meu-opencode-assistant",
+  "displayName": "Meu OpenCode Assistant",
+  "description": "Assistente de código privado com backend local e streaming SSE.",
+  "version": "1.0.0",
+  "publisher": "meu-opencode",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onCommand:meu-opencode.gerarCodigo"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "meu-opencode.gerarCodigo",
+        "title": "Meu OpenCode: Gerar código"
+      }
+    ],
+    "configuration": {
+      "title": "Meu OpenCode Assistant",
+      "properties": {
+        "meu-opencode.backendUrl": {
+          "type": "string",
+          "default": "http://localhost:3000",
+          "description": "URL base do backend local do Meu OpenCode Assistant."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch",
+    "check-types": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "@types/vscode": "^1.94.0",
+    "typescript": "^5.8.3"
+  }
+}
