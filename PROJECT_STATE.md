@@ -39,3 +39,4 @@ Assistente de programação para VS Code. O usuário seleciona código, escreve 
 - `CONTRIBUTING.md`: contribuição e revisão.
 - `SECURITY.md`: segurança e privacidade.
 - `CHANGELOG.md`: histórico de mudanças.
+- `MEMORY_PROJECT.md`: memória completa para instalações e implementações futuras.

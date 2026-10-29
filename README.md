@@ -128,6 +128,7 @@ Sua chave fica somente no arquivo `backend/.env` e não deve ser enviada ao Git.
 - [Como contribuir](CONTRIBUTING.md)
 - [Segurança](SECURITY.md)
 - [Histórico de mudanças](CHANGELOG.md)
+- [Memória do projeto](MEMORY_PROJECT.md): ponto de partida para continuar o trabalho.
 
 ## Licença
 
